@@ -41,7 +41,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Splash"
+            android:name=".SingUp"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
             <meta-data
@@ -65,7 +65,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".SingUp"
+            android:name=".Splash"
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <intent-filter>

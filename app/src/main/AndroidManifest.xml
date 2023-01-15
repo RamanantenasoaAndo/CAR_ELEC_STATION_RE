@@ -33,7 +33,7 @@
             android:value="YOUR_API_KEY" />
 
         <activity
-            android:name=".Acceuil"
+            android:name=".Splash"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <meta-data
@@ -65,7 +65,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Splash"
+            android:name=".Acceuil"
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <intent-filter>

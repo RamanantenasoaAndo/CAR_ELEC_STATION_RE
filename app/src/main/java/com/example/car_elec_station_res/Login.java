@@ -22,6 +22,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Login.this,SingUp.class);
+
                 startActivity(intent);
 
             }

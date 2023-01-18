@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Accueil"
+    <item android:title="@string/map"
         android:id="@+id/bottom_nav_dashboard"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/map"
         app:showAsAction="always"
       />
-    <item android:title="Paramètre"
+    <item android:title="@string/paiement"
         android:id="@+id/bottom_nav_params"
-        android:icon="@drawable/ic_handyman"/>
-    <item android:title="Profile"
+        android:icon="@drawable/baseline_payment_24"/>
+    <item android:title="@string/profile"
         android:id="@+id/bottom_nav_profile"
         android:icon="@drawable/ic_person"/>
-    <item android:title="Recherche"
+    <item android:title="@string/r_serv"
         android:id="@+id/bottom_nav_recherche"
-        android:icon="@drawable/ic_search"/>
+        android:icon="@drawable/ic_book_online"/>
 </menu>

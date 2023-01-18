@@ -24,7 +24,6 @@ public class SingUp extends AppCompatActivity {
                 finish();
             }
         });
-
         //boutton enregistrement
         subbtn = findViewById(R.id.submitBtn);
         subbtn.setOnClickListener(new View.OnClickListener() {
@@ -34,7 +33,6 @@ public class SingUp extends AppCompatActivity {
                 finish();
             }
         });
-
     }
     public void  registreUser(){
         Intent intent = new Intent(SingUp.this,Login.class);

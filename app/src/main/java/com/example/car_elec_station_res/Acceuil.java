@@ -1,13 +1,10 @@
 package com.example.car_elec_station_res;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Switch;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -17,7 +14,7 @@ public class Acceuil extends AppCompatActivity {
     MapsFragment mapsFragment = new MapsFragment();
     HomeFragment homeFragment =new HomeFragment();
     ProfilFragment profilFragment = new ProfilFragment();
-    ParmsFragment parmsFragment = new ParmsFragment();
+    PaiementFragment parmsFragment = new PaiementFragment();
     RechercheFragment rechercheFragment = new RechercheFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {

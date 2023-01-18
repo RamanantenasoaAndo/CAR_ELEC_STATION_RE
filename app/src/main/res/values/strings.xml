@@ -4,4 +4,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add">State</string>
     <string name="filter">Filter</string>
+    <string name="keymap" templateMergeStrategy="preserve" translatable="false">AIzaSyAQpfliNrQyf5iv9oDlymHNQvLpnq9-pA8</string>
+    <string name="map">Map</string>
+    <string name="paiement">Paiement</string>
+    <string name="profile">Profile</string>
+    <string name="r_serv">Réservé</string>
+    <string name="avertissement">Attention : Si votre voiture n\'arrive pas 10 minutes après l\'heure de votre réservation, le terminal de la gare redémarrera pour les autres usagers.</string>
+
 </resources>

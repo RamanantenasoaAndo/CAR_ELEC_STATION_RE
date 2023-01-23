@@ -16,3 +16,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CAR_ELEC_STATION_RES"
 include ':app'
+include ':app:mylibrary'
+include ':mylibrary'

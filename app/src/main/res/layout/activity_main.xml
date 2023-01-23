@@ -143,6 +143,29 @@
                         android:textColor="@color/black" />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        android:text="Mode de recharge"
+                        android:textColor="@color/black" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="10dp"
+                        android:text="Charge rapide 30-350kw"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -219,9 +242,61 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text="Disponible 24/7 jrs"
+                    android:text="Prix de recharge  "
+                    android:textStyle="bold"
+                    android:fontFamily="@font/antic"
                     android:textColor="	#000"
                     android:textSize="15sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="60$/Heur "
+                    android:fontFamily="@font/antic"
+                    android:textColor="	#000"
+                    android:textSize="14sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="Parking "
+                    android:textStyle="bold"
+                    android:fontFamily="@font/antic"
+                    android:textColor="	#000"
+                    android:textSize="15sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="Gratuit "
+                    android:fontFamily="@font/antic"
+                    android:textColor="	#000"
+                    android:textSize="14sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="Disponibiliter"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/antic"
+                    android:textColor="	#000"
+                    android:textSize="15sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="24/7jrs "
+                    android:fontFamily="@font/antic"
+                    android:textColor="	#000"
+                    android:textSize="14sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="Remarque:Disponible sauf si il etait  Reserver!"
+                    android:fontFamily="@font/antic"
+                    android:textColor="	#000"
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <View
@@ -255,7 +330,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/background_acces_info"
+                android:background="@drawable/bg_info_icon"
 
 
                 android:orientation="vertical"
@@ -266,6 +341,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:text="Types de location"
+                    android:fontFamily="@font/antic"
                     android:textAlignment="center"
                     android:textColor="	#000"
                     android:textSize="15sp" />
@@ -275,6 +351,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:text="Adrress"
+                    android:fontFamily="@font/antic"
                     android:textColor="	#000"
                     android:textSize="15sp" />
 
@@ -283,6 +360,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:text="65 Camp Levieux Rt"
+                    android:fontFamily="@font/antic"
                     android:textColor="	#000"
                     android:textSize="15sp" />
 
@@ -292,6 +370,7 @@
                     android:layout_marginLeft="8dp"
                     android:text="Ebene"
                     android:textColor="	#000"
+                    android:fontFamily="@font/antic"
                     android:textSize="15sp" />
             </LinearLayout>
 

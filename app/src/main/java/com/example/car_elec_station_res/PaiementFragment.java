@@ -2,6 +2,8 @@ package com.example.car_elec_station_res;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,6 +18,16 @@ public class PaiementFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_paiement, container, false);
+        View view = inflater.inflate(R.layout.fragment_paiement, container, false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        return  view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        ActionBar actionBar = activity.getSupportActionBar();
+        actionBar.setTitle(R.string.my_fragment_paiement);
     }
 }

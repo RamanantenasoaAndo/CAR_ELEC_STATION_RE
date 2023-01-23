@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,11 +25,16 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MapsFragment extends Fragment {
     Toolbar toolbar;
+    ExtendedFloatingActionButton floatingActionButton;
+
     ArrayList<LatLng> arrayList = new ArrayList<LatLng>();
     LatLng sydney= new LatLng(-34,151);
     LatLng tamworth =new LatLng(-31.083332,150.916672);
@@ -107,6 +114,18 @@ public class MapsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view=  inflater.inflate(R.layout.fragment_maps, container, false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        floatingActionButton = (ExtendedFloatingActionButton) view.findViewById(R.id.state_btn);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(),R.style.BottomSheetDialogTheme);
+                View bottomSheet = getLayoutInflater().inflate(R.layout.state_layout,(LinearLayout)view.findViewById(R.id.btnState));
+                bottomSheetDialog.setContentView(bottomSheet);
+                bottomSheetDialog.show();
+            }
+        });
 
         return  view;
     }
@@ -115,6 +134,8 @@ public class MapsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {

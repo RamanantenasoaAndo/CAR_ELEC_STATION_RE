@@ -2,7 +2,7 @@
     <string name="app_name">CAR_ELEC_STATION_RES</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add">State</string>
+    <string name="add">Etat</string>
     <string name="filter">Filter</string>
     <string name="keymap" templateMergeStrategy="preserve" translatable="false">AIzaSyAQpfliNrQyf5iv9oDlymHNQvLpnq9-pA8</string>
     <string name="map">Map</string>
@@ -10,5 +10,8 @@
     <string name="profile">Profile</string>
     <string name="r_serv">Réservé</string>
     <string name="avertissement">Attention : Si votre voiture n\'arrive pas 10 minutes après l\'heure de votre réservation, le terminal de la gare redémarrera pour les autres usagers.</string>
+    <string name="my_fragment_title">Profil</string>
+    <string name="my_fragment_Reservation">Liste des réservations</string>
+    <string name="my_fragment_paiement">Mode de paiement</string>
 
 </resources>

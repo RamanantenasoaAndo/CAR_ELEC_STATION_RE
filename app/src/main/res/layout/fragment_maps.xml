@@ -49,6 +49,7 @@
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/state_btn"
             android:backgroundTint="#ffff"
             android:text="@string/add"
             android:layout_marginEnd="16dp"
@@ -66,7 +67,6 @@
             android:src="@drawable/ic_zoom_out_map"
             android:backgroundTint="#ffffff"
             android:layout_marginLeft="150dp"/>
-
 
     </LinearLayout>
 

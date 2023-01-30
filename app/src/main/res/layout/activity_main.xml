@@ -44,7 +44,7 @@
                     android:text="Type 2"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
-                    android:textSize="17sp"/>
+                    android:textSize="15sp"/>
             </LinearLayout>
         <ImageView
             android:layout_width="320dp"
@@ -129,6 +129,7 @@
                         android:src="@drawable/type2" />
 
                     <TextView
+                        android:id="@+id/typesB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"

@@ -41,10 +41,10 @@ public class MapsFragment extends Fragment {
     LatLng Newcastle =new LatLng(-32.916668,151.750000);
     LatLng Brisbane =new LatLng(-27.470125,153.021072);
     LatLng Dubbo =new LatLng(-32.256943,148.601105);
-
     //create another arraylist for names for markers
     ArrayList<String> title = new ArrayList<String>();
     ArrayList<String> types = new ArrayList<String>();
+    ArrayList<Integer> idBorne= new ArrayList<Integer>();
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -53,7 +53,8 @@ public class MapsFragment extends Fragment {
 
             for (int i=0;i<arrayList.size();i++) {
                 for (int j = 0; j < title.size(); j++) {
-                    for (int k = 0; k < types.size(); k++) {
+                    for (int k = 0; k < types.size(); k++)
+                        for (int l = 0; l < types.size(); l++){
 
                         MarkerOptions markerOptions = new MarkerOptions();
 
@@ -72,11 +73,9 @@ public class MapsFragment extends Fragment {
                                 .alpha(5)
                                 .snippet(String.valueOf(types.get(i)))
                                 .zIndex(1.0f);
-
                         googleMap.addMarker(markerOptions);
                     }
                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(arrayList.get(i)));
-
                 }
 
             }
@@ -84,8 +83,10 @@ public class MapsFragment extends Fragment {
                 @Override
                 public void onInfoWindowClick(@NonNull Marker marker) {
                     String markertitle = marker.getTitle();
+                    String typePrise = marker.getSnippet();
                     Intent intent = new Intent(getContext(),MainActivity.class);
                     intent.putExtra("title",markertitle);
+                    intent.putExtra("types",typePrise);
                     startActivity(intent);
 
 
@@ -160,6 +161,15 @@ public class MapsFragment extends Fragment {
         types.add("Types 2 ,G");
         types.add("CCS/SAE, CHAdeMO");
         types.add("Types 2 ,UDM");
+
+        //Id de borne de recharge
+        idBorne.add(11);
+        idBorne.add(12);
+        idBorne.add(13);
+        idBorne.add(14);
+        idBorne.add(15);
+
+
     }
 
 

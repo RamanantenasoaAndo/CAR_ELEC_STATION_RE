@@ -29,7 +29,6 @@ public class Login extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
-
         //Botton Login
         buttonSignup = findViewById(R.id.buttonSignUp);
         buttonSignup.setOnClickListener(new View.OnClickListener() {
@@ -65,31 +64,45 @@ public class Login extends AppCompatActivity {
     //Login
 
     public void checkLogin(){
+
         username = findViewById(R.id.Uname);
         Upass = findViewById(R.id.passw);
-        try {
-            connectDB connectDB = new connectDB();
-            connect = connectDB.conclass();
-            if (connect!=null) {
-                String query = "Select * from utilisateur where username = '" + username.getText() + "' and pass = '" + Upass.getText() + "'";
-                Statement st = connect.createStatement();
-                ResultSet rs = st.executeQuery(query);
-                if (rs.next()) {
-                    Toast.makeText(getApplicationContext(), "Success login", Toast.LENGTH_LONG).show();
-                    nextActivity();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Check Username or Password", Toast.LENGTH_LONG).show();
-                    username.setText("");
-                    Upass.setText("");
-                }
-            }else {
-                Toast.makeText(getApplicationContext(), "Check Your Connection", Toast.LENGTH_LONG).show();
-            }
+        String  getusername = username.getText().toString();
+        String getUpass = Upass.getText().toString();
 
-        }catch(Exception ex){
-            Log.e("Error : ", ex.getMessage());
+        if (getUpass.trim().equals("")|| getusername.trim().equals("")){
+            Toast.makeText(getApplicationContext(), "veuillez remplir le champ", Toast.LENGTH_LONG).show();
+        }else {
+            try {
+                connectDB connectDB = new connectDB();
+                connect = connectDB.conclass();
+                if (connect!=null) {
+                    String query = "Select * from utilisateur where username = '" + username.getText() + "' and pass = '" + Upass.getText() + "'";
+                    Statement st = connect.createStatement();
+                    ResultSet rs = st.executeQuery(query);
+                    if (rs.next()) {
+                        Toast.makeText(getApplicationContext(), "Success login", Toast.LENGTH_LONG).show();
+                        nextActivity();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Mot de passe ou username non valider", Toast.LENGTH_LONG).show();
+                        username.setText("");
+                        Upass.setText("");
+                    }
+                }else {
+                    Toast.makeText(getApplicationContext(), "Veuillez vérifier votre connexion Internet", Toast.LENGTH_LONG).show();
+                }
+
+            }catch(Exception ex){
+                Log.e("Error : ", ex.getMessage());
+            }
         }
+
     }
+
+
+
+
+
 
     //Display of data
     public  void getTextFromSql(){

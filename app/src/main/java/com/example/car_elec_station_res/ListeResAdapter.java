@@ -10,11 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.sql.Connection;
 import java.util.List;
 
 public class ListeResAdapter extends RecyclerView.Adapter<ListeResAdapter.ViewHolder> {
     Context context;
     List<ListReservationModel> list_reservation;
+
+
+
 
     public ListeResAdapter(Context context,List<ListReservationModel> list_reservation) {
         this.context = context;
@@ -38,13 +42,12 @@ public class ListeResAdapter extends RecyclerView.Adapter<ListeResAdapter.ViewHo
             holder.dateR.setText(model.getDateR());
             holder.heurFD.setText(model.getHeureD());
         }
-
     }
-
     @Override
     public int getItemCount() {
         return list_reservation.size();
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView idBorne,idVehicule,usrname,dateR,heurFD;

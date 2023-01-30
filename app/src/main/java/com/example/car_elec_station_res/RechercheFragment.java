@@ -9,13 +9,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,14 +61,46 @@ public class RechercheFragment extends Fragment {
     private void setRecyclerView() {
         recycler_list.setHasFixedSize(true);
         recycler_list.setLayoutManager(new LinearLayoutManager(getContext()));
-        listeResAdapter= new ListeResAdapter(getContext(),getList());
+        listeResAdapter = new ListeResAdapter(getContext(),getList());
         recycler_list.setAdapter(listeResAdapter);
     }
     private List<ListReservationModel> getList(){
-
         List<ListReservationModel> list_res = new ArrayList<>();
-        list_res.add(new ListReservationModel("001","025","Andofy","11-12-01","11:00"));
-        list_res.add(new ListReservationModel("002","4852","Hiaka","11-5-01","13:00"));
+        try {
+            connectDB connectDB = new connectDB();
+            Connection connect = connectDB.conclass();
+            if (connect!=null) {
+                String query = "Select IdBorne,NumMatricVeh,id_user,DateRes,HeurDRech from reservation ";
+                Statement st = connect.createStatement();
+                ResultSet rs = st.executeQuery(query);
+                if(rs!=null){
+                    while (rs.next()) {
+                        try{
+                            list_res.add(new ListReservationModel(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)));
+                            Toast.makeText(getContext(), "Affichage de liste de  reservation avec succès ", Toast.LENGTH_LONG).show();
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+                    }
+                }else {
+                    Toast.makeText(getContext(), "Donne Non TROUVER ", Toast.LENGTH_LONG).show();
+                }
+
+            }else {
+                Toast.makeText(getContext(), "Veuillez vérifier votre connexion Internet", Toast.LENGTH_LONG).show();
+            }
+
+        }catch(Exception ex){
+            Log.e("Error : ", ex.getMessage());
+        }
+
+
         return list_res;
+    }
+
+    public void checkDisplay(){
+
+
+
     }
 }

@@ -2,6 +2,7 @@ package com.example.car_elec_station_res;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -21,12 +23,13 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
      CollapsingToolbarLayout markertxt;
      Button btn_reservation,btn_other;
+     TextView markertypes,markertypesB;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         btn_reservation = findViewById(R.id.btn_reserver);
 
         btn_reservation.setOnClickListener(new View.OnClickListener() {
@@ -84,16 +87,21 @@ public class MainActivity extends AppCompatActivity {
                 });
                 dialog.setContentView(bottomSheet);
                 dialog.show();
-
-
             }
-
-
         });
+
 
         markertxt = findViewById(R.id.collapsingToolbar);
         String title = getIntent().getStringExtra("title");
         markertxt.setTitle(title);
+
+        //for Subtitle //for typesBranchement
+        markertypes = findViewById(R.id.subtitle);
+        markertypesB = findViewById(R.id.typesB);
+        String types = getIntent().getStringExtra("types");
+        markertypes.setText(types);
+        markertypesB.setText(types);
+
 
 
        Toolbar toolbar =findViewById(R.id.toolbarLayout);

@@ -70,20 +70,25 @@ public class RechercheFragment extends Fragment {
             connectDB connectDB = new connectDB();
             Connection connect = connectDB.conclass();
             if (connect!=null) {
-                String query = "Select IdBorne,NumMatricVeh,id_user,DateRes,HeurDRech from reservation ";
+                String query = "Select IdBorne," +
+                        "NumMatricVeh," +
+                        "id_user," +
+                        "convert (varchar(20),DateRes,111)," +
+                        "convert (VARCHAR(5),HeurDRech,8) " +
+                        "from reservation ";
                 Statement st = connect.createStatement();
                 ResultSet rs = st.executeQuery(query);
                 if(rs!=null){
                     while (rs.next()) {
                         try{
                             list_res.add(new ListReservationModel(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)));
-                            Toast.makeText(getContext(), "Affichage de liste de  reservation avec succès ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(), "Affichage des lists de  reservation avec succès ", Toast.LENGTH_LONG).show();
                         }catch (Exception ex){
                             ex.printStackTrace();
                         }
                     }
                 }else {
-                    Toast.makeText(getContext(), "Donne Non TROUVER ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Donne Non Trouver ", Toast.LENGTH_LONG).show();
                 }
 
             }else {
@@ -99,8 +104,6 @@ public class RechercheFragment extends Fragment {
     }
 
     public void checkDisplay(){
-
-
 
     }
 }

@@ -18,11 +18,12 @@
 
         <TableRow
             android:background="#96c896"
+
             >
             <TextView
                 android:text="IDBorne"
                 android:textSize="16dp"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:textStyle="bold"
                 android:fontFamily="@font/antic"
@@ -32,7 +33,7 @@
             <TextView
                 android:text="IDVehicule"
                 android:textSize="16dp"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:textStyle="bold"
                 android:fontFamily="@font/antic"
@@ -56,7 +57,7 @@
                 android:padding="5dp"
                 android:fontFamily="@font/antic"
                 android:layout_column="1"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"/>
             <TextView
 
@@ -66,14 +67,17 @@
                 android:textStyle="bold"
                 android:padding="5dp"
                 android:layout_column="1"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:gravity="center_horizontal"/>
         </TableRow>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_liste"
+            android:weightSum="5"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            />
+            android:layout_width="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
     </TableLayout>
 
 </ScrollView>

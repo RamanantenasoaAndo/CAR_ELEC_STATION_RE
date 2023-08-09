@@ -1,117 +1,109 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#fff"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-    tools:context=".PaiementFragment">
+    android:orientation="vertical">
 
-<LinearLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-    >
-<ImageView
-    android:layout_width="150dp"
-    android:layout_height="130dp"
-    android:src="@drawable/logocar"
-    android:transitionName="logoImage"
-    />
     <TextView
+        android:id="@+id/textPaymentTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mode paiement"
-        android:textSize="25dp"
-        android:fontFamily="@font/latobold"
-        android:textStyle="bold|normal"
-        />
-</LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:paddingBottom="30dp">
+        android:textColor="@color/black"
+        android:text="Scan credit card or enter details manually"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="16dp" />
 
-    </View>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:layout_marginBottom="20dp"
-        >
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Montant: 40$/Heure"
-            android:textSize="20dp"
-            android:textAlignment="center"
+            android:text="Card Number"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Card Number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/card"
+                android:textColor="@color/black"
+                android:inputType="number"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date (mm/yy)"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:fontFamily="@font/latoblack"
-            />
+            android:layout_marginTop="16dp" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="30dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="140dp"
-            android:layout_gravity="left"
-            android:src="@drawable/scan"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.498"
-            tools:layout_editor_absoluteX="-52dp"
-            android:clickable="true">
-
-        </ImageView>
-
-        <ImageView
-            android:layout_width="190dp"
-            android:layout_height="150dp"
-            android:layout_gravity="right"
-            android:src="@drawable/crtbq"
-            android:text="Ajouter du cart"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.498"
-            tools:layout_editor_absoluteX="123dp"
-            android:clickable="true"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="200dp"
+        <EditText
+            android:id="@+id/editTextStartDate"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="Scan pour payer"
-            android:fontFamily="@font/antic"
-            android:textSize="15dp" />
+            android:background="@drawable/edittext_background"
+            android:hint="Enter Start Date"
+            android:padding="12dp"
+            android:layout_marginTop="8dp" />
+
         <TextView
-            android:layout_width="150dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:src="@drawable/crtbq"
-            android:text="Payer par carte"
-            android:fontFamily="@font/antic"
-            android:textSize="15dp"
+            android:text="Expiry Date (mm/yy)"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
 
+        <EditText
+            android:id="@+id/editTextExpiryDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_background"
+            android:hint="Enter Expiry Date"
+            android:padding="12dp"
+            android:layout_marginTop="8dp" />
 
-            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CVV"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/editTextCVV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_background"
+            android:hint="Enter CVV"
+            android:padding="12dp"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/buttonAddPaymentCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add payment card"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_background"
+            android:layout_marginTop="24dp" />
+
     </LinearLayout>
-
-
 </LinearLayout>

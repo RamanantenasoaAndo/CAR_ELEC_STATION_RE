@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#fece2f" /> <!-- Remplacez "#FF0000" par la couleur souhaitée -->
+    <corners android:radius="8dp" /> <!-- Réglez la valeur du rayon selon vos préférences -->
+</shape>

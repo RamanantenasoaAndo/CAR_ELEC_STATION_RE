@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/borneListLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/ReservationListLayout"
     android:orientation="vertical"
     android:padding="8dp"
     android:layout_marginBottom="40dp"
@@ -10,5 +11,7 @@
     android:layout_marginEnd="20dp"
     android:background="@drawable/borne_item_background">
 
+<!-- Vos vues et éléments existants ici -->
 
 </LinearLayout>
+

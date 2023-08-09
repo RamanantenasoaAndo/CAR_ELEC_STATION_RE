@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 public class PaiementFragment extends Fragment {
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -29,5 +28,6 @@ public class PaiementFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         ActionBar actionBar = activity.getSupportActionBar();
         actionBar.setTitle(R.string.my_fragment_paiement);
+
     }
 }

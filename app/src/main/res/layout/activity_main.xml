@@ -100,11 +100,18 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:id="@+id/idStation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Types 2"
+                    android:textColor="@color/black" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:text="Disponible"
-                    android:textColor="	#7CFC00"
+                   android:id="@+id/textViewDisponibiliter"
                     android:textSize="15sp" />
 
                 <TextView
@@ -124,8 +131,9 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:id="@+id/imageViewPrise"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:src="@drawable/type2" />
 
                     <TextView
@@ -144,6 +152,17 @@
                         android:textColor="@color/black" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="@font/latobold"
+                    android:text="Information"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -192,6 +211,17 @@
                         android:background="@drawable/button_reserver"
                         android:text="..."
                         android:textColor="@color/black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:paddingBottom="10dp">
 
                 </LinearLayout>
 
@@ -392,31 +422,6 @@
         app:layout_anchorGravity="end|bottom"
         android:layout_marginRight="16dp"
         android:background="#F1C68C" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:paddingBottom="10dp"
-        app:layout_anchor="@+id/nestedScrollView"
-        app:layout_anchorGravity="top|center">
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
-        android:fontFamily="@font/latobold"
-        android:text="Information"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        app:layout_anchor="@+id/linearLayout2"
-        app:layout_anchorGravity="center" />
 
 
     <!--                    <TextView-->

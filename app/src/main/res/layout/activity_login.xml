@@ -44,15 +44,15 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
-            android:id="@+id/username"
+            android:hint="Phone Number"
+            android:id="@+id/phoneL"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/Uname"
+                android:id="@+id/phone"
                 android:textColor="@color/black"
-                android:inputType="text"/>
+                android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -61,12 +61,12 @@
             android:backgroundTint="@color/black"
             android:hint="Password"
             app:passwordToggleEnabled="true"
-            android:id="@+id/pass"
+            android:id="@+id/passL"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/passw"
+                android:id="@+id/pass"
                 android:textColor="@color/black"
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>

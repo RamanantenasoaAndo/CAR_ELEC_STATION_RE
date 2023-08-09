@@ -1,40 +1,57 @@
 package com.example.car_elec_station_res;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.FragmentManager;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputEditText;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.Console;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class Formulaire_reservation extends AppCompatActivity {
-    String[] items =  {"Prise Type 2","Prise Type 3","prise Combo","prise CHAdeMO"};
-    AutoCompleteTextView autoCompleteTxt;
-    Dialog dialog;
-    ArrayAdapter<String> adapterItems;
-    Button submitBtn;
-    TextInputEditText borneId,userId,email,VehMatricul,dateRes;
-    AutoCompleteTextView types_prise,HeureDR,HeureFR;
 
+    private static final List<String> AVAILABLE_PRISE_TYPES = Arrays.asList(
+            "Prise Type 2", "Prise Type 3", "prise Combo", "prise CHAdeMO"
+    );
+    private TextInputEditText dateResEditText;
+    private Calendar calendar;
+    private Button btnHeureDR;
+    private Button btnHeureFR;
+
+    private AutoCompleteTextView autoCompleteTxt;
+    private ArrayAdapter<String> adapterItems;
+    private TextInputEditText VehMatricul, dateRes;
+    private TextView borneIdText, phoneNText;
+    private AutoCompleteTextView types_prise;
+    private Dialog dialog;
+
+    private DatabaseReference databaseReference;
+    private Handler statusHandler;
 
 
     @Override
@@ -42,26 +59,43 @@ public class Formulaire_reservation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulaire_reservation);
 
-        autoCompleteTxt= findViewById(R.id.types_prise);
-        adapterItems = new ArrayAdapter<String>(this,R.layout.list_items,items);
+        dateResEditText = findViewById(R.id.dateRes);
+        calendar = Calendar.getInstance();
+
+        // Format de date pour afficher dans le champ de texte
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String currentDate = dateFormat.format(calendar.getTime());
+        dateResEditText.setText(currentDate);
+
+        dateResEditText.setOnClickListener(v -> showDatePickerDialog());
+        databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://car-elec-station-res-default-rtdb.firebaseio.com/");
+
+        VehMatricul = findViewById(R.id.VehMatricule);
+        dateRes = findViewById(R.id.dateRes);
+
+        btnHeureDR = findViewById(R.id.btnHeureDR);
+        btnHeureFR = findViewById(R.id.btnHeureFR);
+
+        // Reception de l'ID de la borne.
+        borneIdText = findViewById(R.id.borneId);
+        String idB = getIntent().getStringExtra("idbo");
+        borneIdText.setText(idB);
+
+        // Reception du numéro de téléphone.
+        phoneNText = findViewById(R.id.phoneNum);
+        String Userphone = getIntent().getStringExtra("phoneuser");
+        phoneNText.setText(Userphone);
+
+        autoCompleteTxt = findViewById(R.id.types_prise);
+        adapterItems = new ArrayAdapter<>(this, R.layout.list_items, AVAILABLE_PRISE_TYPES);
         autoCompleteTxt.setAdapter(adapterItems);
 
-        autoCompleteTxt.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String item = parent.getItemAtPosition(position).toString();
-                Toast.makeText(getApplicationContext(),"Item: "+item,Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        dialog= new Dialog(Formulaire_reservation.this);
+        dialog = new Dialog(Formulaire_reservation.this);
         dialog.setContentView(R.layout.dialogue_confirmation);
         dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.background));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations=R.style.DialogAnimation;
-
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         Button Cancel = dialog.findViewById(R.id.btn_cancel);
         Button Okay = dialog.findViewById(R.id.btn_okay);
@@ -69,22 +103,50 @@ public class Formulaire_reservation extends AppCompatActivity {
         Okay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    ConfirmBtn();
-                    dialog.dismiss();
+                String idBor = borneIdText.getText().toString();
+                String phoneU = phoneNText.getText().toString();
+                String matrVeh = VehMatricul.getText().toString();
+                String priseT = autoCompleteTxt.getText().toString();
+                String datRe = dateRes.getText().toString();
+                String heurD = btnHeureDR.getText().toString();
+                String heurF = btnHeureFR.getText().toString();
 
+                createReservationInFirebase(idBor, phoneU, matrVeh, priseT, datRe, heurD, heurF, "Pending");
+                // Créez un Intent pour démarrer GereReservationActivity
+                Intent intent = new Intent(Formulaire_reservation.this, GereReservationActivity.class);
+                startActivity(intent);
+
+                // Suivre le statut de la réservation
+                dialog.dismiss();
             }
         });
 
         Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                CancelPress();
+                cancelReservation();
                 dialog.dismiss();
             }
         });
 
-        submitBtn = findViewById(R.id.submitBtn);
+        // Sélection de l'heure de début de réservation
+
+        btnHeureDR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePickerDialog(btnHeureDR);
+            }
+        });
+
+        // Sélection de l'heure de fin de réservation
+        btnHeureFR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePickerDialog(btnHeureFR);
+            }
+        });
+
+        Button submitBtn = findViewById(R.id.submitBtn);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,92 +155,153 @@ public class Formulaire_reservation extends AppCompatActivity {
         });
     }
 
+    private void showTimePickerDialog(final Button timeInputEditText) {
+        final Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(Formulaire_reservation.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                        timeInputEditText.setText(selectedTime);
+                    }
+                }, hour, minute, true);
+
+        timePickerDialog.show();
+    }
+
     private void submitReservation() {
-        borneId = findViewById(R.id.borneId);
-        email = findViewById(R.id.email);
-        userId = findViewById(R.id.userId);
-        VehMatricul = findViewById(R.id.VehMatricul);
-        dateRes = findViewById(R.id.dateRes);
-        types_prise = findViewById(R.id.types_prise);
-        HeureDR = findViewById(R.id.HeureDR);
-        HeureFR = findViewById(R.id.HeureFR);
+        String idBor = borneIdText.getText().toString();
+        String phoneU = phoneNText.getText().toString();
+        String matrVeh = VehMatricul.getText().toString();
+        String priseT = autoCompleteTxt.getText().toString();
+        String datRe = dateRes.getText().toString();
+        String heurD = btnHeureDR.getText().toString();
+        String heurF = btnHeureFR.getText().toString();
 
-        String getborneId = borneId.getText().toString();
-        String getemail = email.getText().toString();
-        String getuserId = userId.getText().toString();
-        String getVehMatricul = VehMatricul.getText().toString();
-        String getDateRe = dateRes.getText().toString();
-        String gettypesPrise = types_prise.getText().toString();
-        String getHeureDR = HeureDR.getText().toString();
-        String getHeureFR = HeureFR.getText().toString();
-
-        if (getborneId.trim().equals("")||getuserId.trim().equals("")||getemail.trim().equals("")
-                ||getVehMatricul.trim().equals("")||getDateRe.trim().equals("")||gettypesPrise.trim().equals("")
-                ||getHeureDR.trim().equals("")||getHeureFR.trim().equals("")){
-            Toast.makeText(getApplicationContext(), "veuillez remplir le champ", Toast.LENGTH_LONG).show();
-        }else {
-            try {
+        // Vérifier si tous les champs sont remplis
+        if (idBor.isEmpty() || phoneU.isEmpty() || matrVeh.isEmpty() || priseT.isEmpty()
+                || datRe.isEmpty() || heurD.isEmpty() || heurF.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+        } else {
+            if (compareTimes(heurD, heurF) < 0) {
+                // L'heure de début de recharge est avant l'heure de fin
                 dialog.show();
-            } catch (Exception ex) {
-                Log.e("Error : ", ex.getMessage());
+
+            } else {
+                // L'heure de début de recharge est après ou égale à l'heure de fin
+                Toast.makeText(this, "Start time must be before end time", Toast.LENGTH_SHORT).show();
             }
         }
+
+
     }
 
-    private  void ConfirmBtn()  {
-        borneId = findViewById(R.id.borneId);
-        email = findViewById(R.id.email);
-        userId = findViewById(R.id.userId);
-        VehMatricul = findViewById(R.id.VehMatricul);
-        dateRes = findViewById(R.id.dateRes);
-        types_prise = findViewById(R.id.types_prise);
-        HeureDR = findViewById(R.id.HeureDR);
-        HeureFR = findViewById(R.id.HeureFR);
-        try {
-            connectDB connectDB = new connectDB();
-            Connection connect = connectDB.conclass();
-            if (connect != null) {
-                String query = "insert INTO reservation (IdBorne,id_user,Email,NumMatricVeh,DateRes,typePrise,HeurDRech,HeurFRech)" +
-                        " values " +
-                        "('" + borneId.getText() + "','" + userId.getText() + "','" + email.getText() + "'," +
-                        "'" + VehMatricul.getText() + "','" + dateRes.getText() + "','" + types_prise.getText() + "'," +
-                        "'" + HeureDR.getText() + "', '" + HeureFR.getText() + "')";
-                Statement st = connect.createStatement();
-                if (st.executeUpdate(query) != 0){
-                    Toast.makeText(getApplicationContext(), "Reservation Reussite!", Toast.LENGTH_LONG).show();
-                    setFragment();
-                }else{
-                    Toast.makeText(getApplicationContext(),"Reservation Non Valide!",Toast.LENGTH_LONG).show();
+
+    private void createReservationInFirebase(String idBor, String phoneU, String matrVeh, String priseT,
+                                             String datRe, String heurD, String heurF ,String status) {
+
+        // Appelez la méthode checkReservationStatus en passant l'ID de la réservation
+
+        databaseReference.child("reservation").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChild(idBor)) {
+                    Toast.makeText(Formulaire_reservation.this, "Borne reserved", Toast.LENGTH_SHORT).show();
+                } else {
+                    DatabaseReference reservationRef = databaseReference.child("reservation").child(idBor);
+                    reservationRef.child("Phone").setValue(phoneU);
+                    reservationRef.child("Matricule").setValue(matrVeh);
+                    reservationRef.child("Branchement").setValue(priseT);
+                    reservationRef.child("DateReservation").setValue(datRe);
+                    reservationRef.child("HeureD_R").setValue(heurD);
+                    reservationRef.child("HeureF_R").setValue(heurF);
+                    reservationRef.child("Status").setValue(status);
+
+                    // Afficher un message de réussite puis terminer l'activité
+                    Toast.makeText(Formulaire_reservation.this, "Reservations submitted successfully", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
-
-            }else {
-                Toast.makeText(getApplicationContext(), "Veuillez vérifier votre connexion Internet!", Toast.LENGTH_LONG).show();
             }
-        }catch (Exception ex){
-            Log.e("Error : ", ex.getMessage());
-        }
 
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase", "Failed to create reservation: " + error.getMessage());
+            }
+        });
     }
 
-    private  void CancelPress(){
-        Toast.makeText(getApplicationContext(), "Réservation annulée !", Toast.LENGTH_LONG).show();
-            userId.setText("");
-            borneId.setText("");
-            email.setText("");
-            VehMatricul.setText("");
-            dateRes.setText("");
-            types_prise.setText("");
-            HeureDR.setText("");
-            HeureFR.setText("");
+
+
+
+    private void cancelReservation() {
+        String idBor = borneIdText.getText().toString();
+
+        // Supprimer la réservation de la base de données
+        DatabaseReference reservationRef = databaseReference.child("reservation").child(idBor);
+        reservationRef.removeValue();
+
+        // Afficher un message de réussite puis terminer l'activité
+        Toast.makeText(this, "Reservation cancelled", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    // Méthode pour obtenir l'heure actuelle au format HH:mm
+    private static String getCurrentTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        return sdf.format(new Date());
+    }
+
+    // Autres méthodes de la classe
+
+    public static int compareTimes(String time1, String time2) {
+        String[] parts1 = time1.split(":");
+        String[] parts2 = time2.split(":");
+
+        int hour1 = Integer.parseInt(parts1[0]);
+        int minute1 = Integer.parseInt(parts1[1]);
+
+        int hour2 = Integer.parseInt(parts2[0]);
+        int minute2 = Integer.parseInt(parts2[1]);
+
+        if (hour1 < hour2) {
+            return -1;
+        } else if (hour1 > hour2) {
+            return 1;
+        } else {
+            // Les heures sont égales, comparer les minutes
+            if (minute1 < minute2) {
+                return -1;
+            } else if (minute1 > minute2) {
+                return 1;
+            } else {
+                // Les heures et les minutes sont égales
+                return 0;
+            }
         }
+    }
+    private void showDatePickerDialog() {
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (view, yearSelected, monthSelected, dayOfMonth) -> {
+                    calendar.set(yearSelected, monthSelected, dayOfMonth);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    dateResEditText.setText(dateFormat.format(calendar.getTime()));
+                },
+                year, month, day
+        );
 
-    //from Activity to Fragment
-    protected void setFragment() {
-        Fragment fragment = new RechercheFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.bottom_nav_recherche, fragment, fragment.getClass().getSimpleName())
-                .addToBackStack(null)
-                .commit();
+        // Définir la date minimale sur la date actuelle
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+        datePickerDialog.show();
     }
 }
+

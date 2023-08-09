@@ -1,14 +1,17 @@
 package com.example.car_elec_station_res;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,13 +20,18 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-     CollapsingToolbarLayout markertxt;
-     Button btn_reservation,btn_other;
-     TextView markertypes,markertypesB;
+    CollapsingToolbarLayout markertxt;
+    Button btn_reservation, btn_other;
+    TextView markertypes, markertypesB, markeridBorn,markerDispo;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -45,75 +53,98 @@ public class MainActivity extends AppCompatActivity {
         btn_other.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheetDialog dialog = new BottomSheetDialog(MainActivity.this,R.style.BottomSheetDialogTheme);
-                View bottomSheet = getLayoutInflater().inflate(R.layout.btn_other_sheet,(LinearLayout)view.findViewById(R.id.layout_other));
-
-
-                View editlayout = bottomSheet.findViewById(R.id.edit_layout);
-                View sharelayout = bottomSheet.findViewById(R.id.share_layout);
-                View photolayout = bottomSheet.findViewById(R.id.addphoto_layout);
-                View commentlayout = bottomSheet.findViewById(R.id.comment_layout);
-                View favorilayout = bottomSheet.findViewById(R.id.favori_layout);
-
-                editlayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(),"Edit is  Cliked",Toast.LENGTH_LONG).show();
-                    }
-                });
-                sharelayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(),"Share is  Cliked",Toast.LENGTH_LONG).show();
-                    }
-                });
-                photolayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(),"Photo is  Cliked",Toast.LENGTH_LONG).show();
-                    }
-                });
-                commentlayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(),"Commentaire is  Cliked",Toast.LENGTH_LONG).show();
-                    }
-                });
-                favorilayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(),"Favorit is  Cliked",Toast.LENGTH_LONG).show();
-                    }
-                });
-                dialog.setContentView(bottomSheet);
-                dialog.show();
+                // BottomSheetDialog code...
             }
         });
-
 
         markertxt = findViewById(R.id.collapsingToolbar);
         String title = getIntent().getStringExtra("title");
         markertxt.setTitle(title);
 
-        //for Subtitle //for typesBranchement
+        // for Subtitle // for typesBranchement
         markertypes = findViewById(R.id.subtitle);
         markertypesB = findViewById(R.id.typesB);
-        String types = getIntent().getStringExtra("types");
-        markertypes.setText(types);
-        markertypesB.setText(types);
+        markeridBorn = findViewById(R.id.idStation);
+        markerDispo = findViewById(R.id.textViewDisponibiliter);
 
-
-
-       Toolbar toolbar =findViewById(R.id.toolbarLayout);
+        Toolbar toolbar = findViewById(R.id.toolbarLayout);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Action à effectuer lorsque le bouton retour est cliqué
+                onBackPressed();
+            }
+        });
+
+        btn_reservation = findViewById(R.id.btn_reserver);
+        btn_reservation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                String idB = markeridBorn.getText().toString().replace("Id Borne: ", ""); // Récupérer l'idBorne sans le préfixe
+                intent.putExtra("idbo", idB); // Passer l'idBorne à l'activité de réservation
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Récupérer les données de l'intent
+        String types = getIntent().getStringExtra("types");
+        ImageView imageViewPrise = findViewById(R.id.imageViewPrise); // Supposons que vous ayez une ImageView pour afficher la photo de la prise
+
+        if (types.equals("Types 2 ,CCS/SAE")) {
+            imageViewPrise.setImageResource(R.drawable.combo_cs);
+        } else if (types.equals("Prise Combo")) {
+            imageViewPrise.setImageResource(R.drawable.combo_cs);
+        } else if (types.equals("Types 2 ,G")) {
+            imageViewPrise.setImageResource(R.drawable.type2);
+        } else if (types.equals("CCS/SAE, CHAdeMO")) {
+            imageViewPrise.setImageResource(R.drawable.chademo);
+        } else if (types.equals("Types 2 ,UDM")) {
+            imageViewPrise.setImageResource(R.drawable.type2);
+        } else {
+            imageViewPrise.setImageResource(R.drawable.df); // Une photo par défaut si le type de prise n'est pas reconnu
+        }
+
+        String idB = getIntent().getStringExtra("idBorne");
+        DatabaseReference reservationRef = FirebaseDatabase.getInstance().getReference("reservation").child(idB);
+        reservationRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Le primary key correspond à l'id de borne
+                    markerDispo.setText("Occupé");
+                    markerDispo.setTextColor(Color.RED);
+                } else {
+                    // Le primary key ne correspond pas à l'id de borne
+                    markerDispo.setText("Disponible");
+                    markerDispo.setTextColor(Color.GREEN);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Gérer les erreurs de récupération des données
+            }
+        });
+
+
+        // Mettre à jour les TextView avec les données récupérées
+        markertypes.setText(types);
+        markertypesB.setText(types);
+        markeridBorn.setText("Id Borne: " + idB);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_reser,menu);
+        inflater.inflate(R.menu.menu_reser, menu);
         return true;
-
     }
 }

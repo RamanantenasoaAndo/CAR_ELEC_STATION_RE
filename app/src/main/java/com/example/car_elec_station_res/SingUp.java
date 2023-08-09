@@ -1,30 +1,36 @@
 package com.example.car_elec_station_res;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.ColorSpace;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SingUp extends AppCompatActivity   {
     Button haveAccbtn,subbtn;
-    TextInputEditText passUsere,Nphonee,maile,nameUsere,Fnamee;
-    Connection connect;
-    ColorSpace.Model model;
+    TextInputEditText passUsere,Nphonee,maile,Fnamee;
+    //create object of databasereference class to access firebase's Realtime database
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://car-elec-station-res-default-rtdb.firebaseio.com/");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sing_up);
+
+        Fnamee = findViewById(R.id.Fname);
+        maile = findViewById(R.id.mail);
+        Nphonee = findViewById(R.id.Nphone);
+        passUsere = findViewById(R.id.passUser);
 
         //boutton si l'utilisateur a des  compte
         haveAccbtn = findViewById(R.id.HaveAccountbtn);
@@ -36,61 +42,70 @@ public class SingUp extends AppCompatActivity   {
                 finish();
             }
         });
+
         //boutton enregistrement
         subbtn = findViewById(R.id.submitBtn);
-        subbtn.setOnClickListener(new View.OnClickListener() {
+        subbtn.setOnClickListener(v -> createAccount());
+
+    }
+void createAccount(){
+    String Fname = Fnamee.getText().toString();
+    String mail = maile.getText().toString();
+    String phone = Nphonee.getText().toString();
+    String pass = passUsere.getText().toString();
+
+    //check if user fill all fields before sending data to firebase
+    if(Fname.isEmpty()||mail.isEmpty()||phone.isEmpty()||pass.isEmpty()){
+        Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+    }
+
+    boolean isValidated = validateData(mail,phone,pass);
+    //si la validation est faux
+    if (!isValidated){
+        return;
+    }
+    createAccountInFirebase(Fname,mail,phone,pass);
+}
+void createAccountInFirebase(String Fname, String mail, String phone, String pass){
+        databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                checkRegistreUser();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //check if phone is not registered before
+              if(snapshot.hasChild(phone)){
+                  Toast.makeText(SingUp.this, "Phone is already registered", Toast.LENGTH_SHORT).show();
+              }
+              else{
+                  databaseReference.child("users").child(phone).child("Fullname").setValue(Fname);
+                  databaseReference.child("users").child(phone).child("Email").setValue(mail);
+                  databaseReference.child("users").child(phone).child("Password").setValue(pass);
+//show a success message then finish the activity.
+                  Toast.makeText(SingUp.this, "User registered successfully", Toast.LENGTH_SHORT).show();
+                  startActivity(new Intent(SingUp.this,Login.class));
+              }
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
         });
+
+}
+boolean validateData(String mail ,String phone,String pass){
+        //validate the data that are input user.
+    if (!Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
+        maile.setError("Email is invalid");
+        return false;
     }
-    private void checkRegistreUser() {
-        Fnamee = findViewById(R.id.Fname);
-        nameUsere = findViewById(R.id.nameUser);
-        maile = findViewById(R.id.mail);
-        Nphonee = findViewById(R.id.Nphone);
-        passUsere = findViewById(R.id.passUser);
-
-        String getFname = Fnamee.getText().toString();
-        String getnameuser = nameUsere.getText().toString();
-        String getmail = maile.getText().toString();
-        String getphone = Nphonee.getText().toString();
-        String getpass = passUsere.getText().toString();
-        if (getFname.trim().equals("")||getnameuser.trim().equals("")||getmail.trim().equals("")||getphone.trim().equals("")||getpass.trim().equals("")){
-            Toast.makeText(getApplicationContext(), "veuillez remplir le champ", Toast.LENGTH_LONG).show();
-
-        }else {
-            try {
-                connectDB connectDB = new connectDB();
-                connect = connectDB.conclass();
-                if (connect!=null) {
-                    String query = "insert INTO utilisateur (username,fullname,email,phone,pass) values ('"+nameUsere.getText()+"','"+Fnamee.getText()+"','"+maile.getText()+"','"+Nphonee.getText()+"','"+passUsere.getText()+"')";
-                    Statement st = connect.createStatement();
-                    if (st.executeUpdate(query) != 0)  {
-                        Toast.makeText(getApplicationContext(), "Inscription réussite!", Toast.LENGTH_LONG).show();
-                        successLogin();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "inscription non validee !", Toast.LENGTH_LONG).show();
-                        nameUsere.setText("");
-                        passUsere.setText("");
-                        Nphonee.setText("");
-                        passUsere.setText("");
-                        Fnamee.setText("");
-                    }
-                }else {
-                    Toast.makeText(getApplicationContext(), "Veuillez vérifier votre connexion Internet!", Toast.LENGTH_LONG).show();
-                }
-
-            }catch(Exception ex){
-                Log.e("Error : ", ex.getMessage());
-            }
-        }
-
-
+    if (pass.length()<4){
+        passUsere.setError("Password lenght is invalid");
+        return false;
     }
-
+    if (phone.length()<8){
+        Nphonee.setError("Phone Number is invalid");
+        return false;
+    }
+    return  true;
+}
 
     public void  successLogin(){
         Intent intent = new Intent(SingUp.this,Login.class);

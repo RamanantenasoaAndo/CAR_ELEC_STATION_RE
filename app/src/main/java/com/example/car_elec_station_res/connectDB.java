@@ -12,11 +12,11 @@ public class connectDB {
     String ip,port,db,un,pass;
     @SuppressLint("NewApi")
     public Connection conclass() {
-        ip = "192.168.100.126";
+        ip = "192.168.104.11";
         port = "1433";
         db = "andodb";
-        un = "ando";
-        pass = "ramanantenasoa";
+        un = "Ando";
+        pass = "Ramanantenasoa";
         StrictMode.ThreadPolicy tpolicy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(tpolicy);
         Connection connection =null;

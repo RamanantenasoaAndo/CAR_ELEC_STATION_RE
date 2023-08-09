@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textViewBranchement"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:textColor="@color/blue"
+        android:fontFamily="@font/antic"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewDateReservation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/blue"
+        android:fontFamily="@font/antic"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textViewHeureD_R"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/blue"
+        android:fontFamily="@font/antic"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textViewHeureF_R"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/blue"
+        android:fontFamily="@font/antic"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textViewMatricule"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/blue"
+        android:fontFamily="@font/antic"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textViewPhone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/blue"
+        android:fontFamily="@font/antic"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/textViewStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/blue"
+        android:fontFamily="@font/antic"
+        android:textSize="14sp" />
+
+</LinearLayout>

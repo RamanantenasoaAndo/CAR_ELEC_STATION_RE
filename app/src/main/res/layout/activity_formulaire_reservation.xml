@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:background="#fff"
     android:padding="20dp"
-
     tools:context=".Formulaire_reservation">
 
     <LinearLayout
@@ -17,85 +16,94 @@
             android:layout_width="150dp"
             android:layout_height="130dp"
             android:src="@drawable/logocar"
-            android:transitionName="logoImage"
-            />
+            android:transitionName="logoImage"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Formulaire de Reservation"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:fontFamily="@font/latobold"
-            android:textStyle="bold|normal"
-            />
+            android:textStyle="bold|normal"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="vertical"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp">
-        <com.google.android.material.textfield.TextInputLayout
 
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
-            android:hint="Id Borne"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="40dp">
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Id Borne:"
+                android:textColor="@color/black"
+                android:layout_marginStart="20dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/antic" />
+
+            <TextView
                 android:id="@+id/borneId"
-                android:inputType="text"
-                android:textColor="@color/black" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Id Utilisateur"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:textColor="@color/black"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/userId"
-                android:inputType="text"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/email"
+                android:text=""
                 android:textColor="@color/black"
-                android:inputType="textEmailAddress"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginStart="5dp"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone number:"
+                android:textColor="@color/black"
+                android:layout_marginStart="20dp"
+                android:textSize="15sp"
+                android:fontFamily="@font/antic" />
+
+            <TextView
+                android:id="@+id/phoneNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/black"
+                android:layout_marginStart="5dp"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Num matriculation de vehicule"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/VehMatricule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/VehMatricul"
                 android:textColor="@color/black"
                 android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/typesB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Types de branchement"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
             <AutoCompleteTextView
                 android:id="@+id/types_prise"
                 android:layout_width="match_parent"
@@ -103,8 +111,8 @@
                 android:textColor="@color/black"
                 android:inputType="none"/>
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
 
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Date de reservation"
@@ -115,66 +123,55 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="date"
-
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="2"
             android:orientation="horizontal">
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.0">
-                <com.google.android.material.textfield.TextInputLayout
 
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Heure Debut de recharge"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-                    <AutoCompleteTextView
-                        android:id="@+id/HeureDR"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:inputType="time"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </RelativeLayout>
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0">
-                <com.google.android.material.textfield.TextInputLayout
 
+                <Button
+                    android:id="@+id/btnHeureDR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Heure Debut de recharge"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/black"
+                    android:background="@drawable/edittext_bg"
+                    android:padding="10dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0">
+
+                <Button
+                    android:id="@+id/btnHeureFR"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Heure fin de Recharge"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-                    <AutoCompleteTextView
-                        android:id="@+id/HeureFR"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:inputType="time"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/black"
+                    android:background="@drawable/edittext_bg"
+                    android:padding="10dp"/>
             </RelativeLayout>
-
-
         </LinearLayout>
-
 
         <TextView
             android:paddingTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/avertissement"
-            android:textSize="12dp"/>
-
+            android:textSize="12sp"/>
     </LinearLayout>
-
 
     <Button
         android:id="@+id/submitBtn"

@@ -13,5 +13,8 @@
     <string name="my_fragment_title">Profil</string>
     <string name="my_fragment_Reservation">Liste des réservations</string>
     <string name="my_fragment_paiement">Mode de paiement</string>
+    <string name="id_borne_format">ID Borne: %s</string>
+    <string name="titre_format">Titre: %s</string>
+    <string name="types_prise_format">Types de prise: %s</string>
 
 </resources>

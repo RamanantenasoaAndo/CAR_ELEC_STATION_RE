@@ -1,11 +1,17 @@
 package com.example.car_elec_station_res;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,6 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 public class RefreshReceiver extends BroadcastReceiver {
+
+    private static boolean notificationSent = false;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         DatabaseReference reservationsRef = FirebaseDatabase.getInstance().getReference("reservation");
@@ -40,7 +49,11 @@ public class RefreshReceiver extends BroadcastReceiver {
                     Calendar endDateTime = convertToCalendar(dateReservation, heureF_R);
 
                     // Comparer la date et l'heure actuelles avec la date de réservation et l'heure de début/fin
-                    if (currentDateTime.equals(reservationDateTime)) {
+                    if (status.equals("Expired") && !notificationSent) {
+                        showNotification(context, "Statut de réservation", "Votre réservation a expiré.");
+                        notificationSent = true;
+
+                    } else if (currentDateTime.equals(reservationDateTime)) {
                         // La date de réservation et l'heure de début sont égales à la date et l'heure actuelles
                         // Mettre à jour le statut en cours
                         reservationsRef.child(dataSnapshot.getKey()).child("Status").setValue("En cours");
@@ -90,5 +103,25 @@ public class RefreshReceiver extends BroadcastReceiver {
 
         calendar.set(year, month, day, hour, minute);
         return calendar;
+    }
+
+    // Méthode pour afficher une notification
+    private void showNotification(Context context, String title, String message) {
+        // Créer un canal de notification (nécessaire pour Android 8.0 et versions ultérieures)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("channel_id", "Channel Name", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Créer et afficher la notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel_id")
+                .setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+        notificationManagerCompat.notify(1, builder.build());
     }
 }

@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.widget.Toast;
 
@@ -29,11 +30,52 @@ public class RefreshReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         DatabaseReference reservationsRef = FirebaseDatabase.getInstance().getReference("reservation");
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
+        String loggedPhone = sharedPreferences.getString("logged_in_phone", "");
+
+        if (isLoggedIn) {
+
+            reservationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String dateReservation = dataSnapshot.child("DateReservation").getValue(String.class);
+                        String phoneNumber = dataSnapshot.child("Phone").getValue(String.class);
+                        String status = dataSnapshot.child("Status").getValue(String.class);
+                        String matricule = dataSnapshot.child("Matricule").getValue(String.class); // Ajoutez cette ligne
+                        String heureD_R = dataSnapshot.child("HeureD_R").getValue(String.class);
+                        String heureF_R = dataSnapshot.child("HeureF_R").getValue(String.class);
+                        // Convertir la date de réservation, l'heure de début et l'heure de fin en objets Calendar
+                        Calendar reservationDateTime = convertToCalendar(dateReservation, heureD_R);
+                        Calendar endDateTime = convertToCalendar(dateReservation, heureF_R);
+
+                        // Vérifier si la réservation est associée au numéro de téléphone de la personne connectée
+                        if (phoneNumber != null && phoneNumber.equals(loggedPhone) && status.equals("Expired")) {
+                            showNotification(context, "Statut de réservation", "La reservation de Borne ete expiré,Num MAT:",matricule);
+                            notificationSent=true;
+                        }
+
+                        if (isStartTimeApproaching(reservationDateTime) && !notificationSent) {
+                            showNotification(context, "Alerte de recharge", "Votre heure de début de recharge approche dans 10 minutes. Num MAT:", matricule);
+                            notificationSent = true;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Gestion des erreurs
+                }
+            });
+        }
+
 
         // Obtenir la date et l'heure actuelles
         Calendar currentDateTime = Calendar.getInstance();
         int currentHour = currentDateTime.get(Calendar.HOUR_OF_DAY);
         int currentMinute = currentDateTime.get(Calendar.MINUTE);
+
 
         reservationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -44,21 +86,23 @@ public class RefreshReceiver extends BroadcastReceiver {
                     String heureF_R = dataSnapshot.child("HeureF_R").getValue(String.class);
                     String status = dataSnapshot.child("Status").getValue(String.class);
 
+
                     // Convertir la date de réservation, l'heure de début et l'heure de fin en objets Calendar
                     Calendar reservationDateTime = convertToCalendar(dateReservation, heureD_R);
                     Calendar endDateTime = convertToCalendar(dateReservation, heureF_R);
 
                     // Comparer la date et l'heure actuelles avec la date de réservation et l'heure de début/fin
-                    if (status.equals("Expired") && !notificationSent) {
-                        showNotification(context, "Statut de réservation", "Votre réservation a expiré.");
-                        notificationSent = true;
-
+                    // Vérifier si l'heure actuelle est à l'intérieur de la plage horaire de début et de fin de recharge
+                    if (currentDateTime.after(reservationDateTime) && currentDateTime.before(endDateTime)) {
+                        // Mettre à jour le statut en cours
+                        reservationsRef.child(dataSnapshot.getKey()).child("Status").setValue("En cours");
+                        Toast.makeText(context, "Statut de réservation mis à jour : En cours", Toast.LENGTH_SHORT).show();
                     } else if (currentDateTime.equals(reservationDateTime)) {
                         // La date de réservation et l'heure de début sont égales à la date et l'heure actuelles
                         // Mettre à jour le statut en cours
                         reservationsRef.child(dataSnapshot.getKey()).child("Status").setValue("En cours");
                         Toast.makeText(context, "Statut de réservation mis à jour : En cours", Toast.LENGTH_SHORT).show();
-                    } else if (currentDateTime.after(reservationDateTime)) {
+                    }else if (currentDateTime.after(reservationDateTime)) {
                         // L'heure actuelle est après la date de réservation et l'heure de début
                         if (currentDateTime.before(endDateTime)) {
                             // L'heure actuelle est avant la date de réservation et l'heure de fin
@@ -104,9 +148,19 @@ public class RefreshReceiver extends BroadcastReceiver {
         calendar.set(year, month, day, hour, minute);
         return calendar;
     }
+    // Méthode pour vérifier si l'heure de début de recharge approche dans les 10 minutes
+    private boolean isStartTimeApproaching(Calendar startTime) {
+        Calendar tenMinutesBeforeStartTime = (Calendar) startTime.clone();
+        tenMinutesBeforeStartTime.add(Calendar.MINUTE, -10);
+
+        Calendar currentDateTime = Calendar.getInstance();
+
+        return currentDateTime.before(startTime) && currentDateTime.after(tenMinutesBeforeStartTime);
+    }
+
 
     // Méthode pour afficher une notification
-    private void showNotification(Context context, String title, String message) {
+    private void showNotification(Context context, String title, String message,String matricule) {
         // Créer un canal de notification (nécessaire pour Android 8.0 et versions ultérieures)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("channel_id", "Channel Name", NotificationManager.IMPORTANCE_DEFAULT);

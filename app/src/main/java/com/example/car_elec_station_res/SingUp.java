@@ -3,7 +3,9 @@ package com.example.car_elec_station_res;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -79,7 +81,14 @@ void createAccountInFirebase(String Fname, String mail, String phone, String pas
                   databaseReference.child("users").child(phone).child("Email").setValue(mail);
                   databaseReference.child("users").child(phone).child("Password").setValue(pass);
 //show a success message then finish the activity.
+                  // Enregistrement du numéro de téléphone dans les préférences partagées
+                  SharedPreferences preferences = getSharedPreferences("user_data", Context.MODE_PRIVATE);
+                  SharedPreferences.Editor editor = preferences.edit();
+                  editor.putString("user_phone", phone); // Remplacez "user_phone" par la clé appropriée
+                  editor.apply();
                   Toast.makeText(SingUp.this, "User registered successfully", Toast.LENGTH_SHORT).show();
+
+
                   startActivity(new Intent(SingUp.this,Login.class));
               }
             }

@@ -13,34 +13,52 @@
         tools:context=".MapsFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"/>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp">
-            <androidx.appcompat.widget.SearchView
-                    android:layout_marginTop="20dp"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/sv_location"
-                    android:queryHint="Search Location...."
-                    android:iconifiedByDefault="false"
-                    android:layout_margin="10dp"
-                    android:elevation="5dp"
-                    android:background="@drawable/bg_map"/>
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center"
+        android:background="#fece2f"
+        android:orientation="horizontal">
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_person"/>
+
+        <TextView
+            android:id="@+id/phoneNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:text=""
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/antic" />
+    </LinearLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/filterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF"
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/antic"
             android:text="@string/filter"
             app:icon="@drawable/ic_filter"
-            app:rippleColor="@color/teal_200" />
-    </LinearLayout>
+            app:rippleColor="@color/teal_200"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

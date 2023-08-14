@@ -9,6 +9,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -93,13 +94,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         // Configuration de l'alarme pour se déclencher toutes les 5 minutes
-        long intervalMillis = 3 * 60 * 1000; // 5 minutes en millisecondes
+        long intervalMillis = 1 * 60 * 1000; // 5 minutes en millisecondes
         alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 System.currentTimeMillis(),
                 intervalMillis,
                 pendingIntent
         );
+        // Vérifiez si l'utilisateur est déjà connecté
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String loggedPhone = sharedPreferences.getString("logged_in_phone", "");
+
+// Récupérez le TextView où vous souhaitez afficher le numéro de téléphone
+        TextView phoneNumberTextView = view.findViewById(R.id.phoneNumberTextView);
+        phoneNumberTextView.setText(loggedPhone);
 
         floatingActionButton = (ExtendedFloatingActionButton) view.findViewById(R.id.state_btn);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

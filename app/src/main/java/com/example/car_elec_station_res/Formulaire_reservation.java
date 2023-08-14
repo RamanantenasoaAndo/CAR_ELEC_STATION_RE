@@ -1,9 +1,11 @@
 package com.example.car_elec_station_res;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -152,6 +154,7 @@ public class Formulaire_reservation extends AppCompatActivity {
             public void onClick(View view) {
                 submitReservation();
             }
+
         });
     }
 
@@ -195,6 +198,11 @@ public class Formulaire_reservation extends AppCompatActivity {
                 Toast.makeText(this, "Start time must be before end time", Toast.LENGTH_SHORT).show();
             }
         }
+        checkExistingReservation(phoneU);
+        // Récupérez le numéro de téléphone de l'utilisateur à partir des préférences partagées
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String userPhone = sharedPreferences.getString("logged_in_phone", "");
+
 
 
     }
@@ -303,5 +311,43 @@ public class Formulaire_reservation extends AppCompatActivity {
 
         datePickerDialog.show();
     }
+
+    private void checkExistingReservation(String phoneNumber) {
+        DatabaseReference reservationsRef = FirebaseDatabase.getInstance().getReference("reservation");
+
+        reservationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String existingPhoneNumber = dataSnapshot.child("PhoneNumber").getValue(String.class);
+
+                    if (existingPhoneNumber.equals(phoneNumber)) {
+                        // Une réservation existe déjà pour ce numéro de téléphone
+                        // Afficher un message à l'utilisateur ou empêcher la réservation
+                        showReservationAlert();
+
+                        return;
+                    }
+                }
+
+                // Aucune réservation existante pour ce numéro de téléphone
+                // L'utilisateur peut continuer avec la réservation
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Gestion des erreurs
+            }
+        });
+    }
+    private void showReservationAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Réservation existante")
+                .setMessage("Vous avez déjà réservé une borne en cours ou en attente. Veuillez attendre la fin de votre réservation actuelle.")
+                .setPositiveButton("OK", null)
+                .show();
+    }
+
+
 }
 

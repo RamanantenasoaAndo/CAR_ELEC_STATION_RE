@@ -16,5 +16,43 @@
     <string name="id_borne_format">ID Borne: %s</string>
     <string name="titre_format">Titre: %s</string>
     <string name="types_prise_format">Types de prise: %s</string>
+    <string name="info_content">
+Introduction\n
+L"application de réservation de bornes de recharge pour voitures électriques offre une solution pratique et écologique pour les propriétaires de voitures électriques. Que vous soyez un conducteur soucieux de l'environnement ou simplement à la recherche d'une solution de recharge pratique, notre application est conçue pour répondre à vos besoins.\n
+\n
+Comment ça marche ?\n
+\n
+Trouver des Borne de Recharge Proches : Utilisez notre application pour localiser les bornes de recharge disponibles à proximité de votre emplacement actuel. Vous pouvez voir les bornes disponibles sur une carte interactive, filtrer par types de prises et obtenir des informations sur la disponibilité en temps réel.\n
+\n
+Réserver Votre Borne : Une fois que vous avez trouvé la borne de recharge qui vous convient, vous pouvez la réserver en quelques clics. Indiquez l'heure de début et la durée prévue de la recharge, puis confirmez votre réservation.\n
+\n
+Suivre la Recharge : Pendant que votre voiture se recharge, vous pouvez suivre l'état de la recharge en temps réel grâce à notre application. Vous serez informé lorsque la recharge est terminée.\n
+\n
+Avantages de l'Application\n
+\n
+Confort et Commodité : Évitez les files d'attente et les incertitudes liées à la recherche d'une borne de recharge libre. Réservez à l'avance et rechargez votre voiture en toute tranquillité.\n
+\n
+Économies de Temps : Gagnez du temps en évitant les recherches de bornes de recharge disponibles. Planifiez vos recharges à l'avance et optimisez votre emploi du temps.\n
+\n
+Options de Personnalisation : Filtrez les bornes de recharge par types de prises, puissance de recharge et emplacements. Trouvez la borne qui correspond à vos besoins spécifiques.\n
+\n
+Notifications en Temps Réel : Recevez des notifications sur l'état de votre réservation et de votre recharge, vous tenant informé à chaque étape.\n
+\n
+Historique de Recharge : Consultez votre historique de recharges passées pour un suivi détaillé de votre utilisation.\n
+\n
+Questions Fréquentes\n
+\n
+Comment Puis-Je Réserver une Borne de Recharge ? : Une fois que vous avez localisé une borne de recharge, cliquez sur "Réserver" et choisissez l'heure de début et la durée de la recharge.\n
+\n
+Puis-Je Annuler Ma Réservation ? : Oui, vous pouvez annuler votre réservation avant l'heure de début prévue. Des frais d'annulation peuvent s'appliquer.\n
+\n
+Comment Puis-Je Payer ? : Les paiements sont traités de manière sécurisée via l'application. Vous pouvez lier votre carte de crédit ou utiliser des méthodes de paiement alternatives.\n
+\n
+Que Faire si la Borne de Recharge est Occupée ? : Si la borne réservée est déjà occupée à votre arrivée, notre application vous proposera d'autres bornes disponibles à proximité.\n
+\n
+Prêt à Essayer ?\n
+Téléchargez notre application dès aujourd'hui et découvrez la facilité de réservation de bornes de recharge pour voitures électriques. Simplifiez vos déplacements tout en contribuant à un avenir plus durable.
+</string>
+
 
 </resources>

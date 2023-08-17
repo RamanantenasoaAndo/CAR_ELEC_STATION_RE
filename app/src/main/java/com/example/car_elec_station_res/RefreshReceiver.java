@@ -1,5 +1,6 @@
 package com.example.car_elec_station_res;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,11 +9,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,11 +26,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class RefreshReceiver extends BroadcastReceiver {
 
     private static boolean notificationSent = false;
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -33,6 +41,8 @@ public class RefreshReceiver extends BroadcastReceiver {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
         String loggedPhone = sharedPreferences.getString("logged_in_phone", "");
+
+
 
         if (isLoggedIn) {
 
@@ -51,15 +61,31 @@ public class RefreshReceiver extends BroadcastReceiver {
                         Calendar endDateTime = convertToCalendar(dateReservation, heureF_R);
 
                         // Vérifier si la réservation est associée au numéro de téléphone de la personne connectée
-                        if (phoneNumber != null && phoneNumber.equals(loggedPhone) && status.equals("Expired")) {
-                            showNotification(context, "Statut de réservation", "La reservation de Borne ete expiré,Num MAT:",matricule);
-                            notificationSent=true;
+
+                            if (!notificationSent) {
+                                if (phoneNumber != null && phoneNumber.equals(loggedPhone) && status.equals("Expired")) {
+                                    showNotification(context, "Statut de réservation", "La reservation de Borne est expirée, Num MAT: " + matricule, matricule);
+                                    notificationSent = true;
+
+                                    // Mettre à jour la valeur dans SharedPreferences
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putBoolean("notification_sent", false);
+                                    editor.apply();
+                                }
+
+                                if (isStartTimeApproaching(reservationDateTime) && !notificationSent) {
+                                    showNotification(context, "Alerte de recharge", "Votre heure de début de recharge approche dans 10 minutes. Num MAT: " + matricule, matricule);
+                                    notificationSent = true;
+
+                                    // Mettre à jour la valeur dans SharedPreferences
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putBoolean("notification_sent", false);
+                                    editor.apply();
+                                }
+
                         }
 
-                        if (isStartTimeApproaching(reservationDateTime) && !notificationSent) {
-                            showNotification(context, "Alerte de recharge", "Votre heure de début de recharge approche dans 10 minutes. Num MAT:", matricule);
-                            notificationSent = true;
-                        }
+
                     }
                 }
 
@@ -173,9 +199,11 @@ public class RefreshReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
                 .setContentTitle(title)
                 .setContentText(message)
+
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         notificationManagerCompat.notify(1, builder.build());
     }
+
 }

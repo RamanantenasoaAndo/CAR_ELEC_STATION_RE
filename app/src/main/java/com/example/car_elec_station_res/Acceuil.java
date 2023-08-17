@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class Acceuil extends AppCompatActivity {
+public class Acceuil extends AppCompatActivity implements Formulaire_reservation.ReservationConfirmedListener{
     BottomNavigationView bottomNavigationView;
     MapsFragment mapsFragment = new MapsFragment();
     HomeFragment homeFragment =new HomeFragment();
@@ -51,5 +51,9 @@ public class Acceuil extends AppCompatActivity {
                 return false;
             }
         });
+    }
+    @Override
+    public void onReservationConfirmed() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, rechercheFragment).commit();
     }
 }

@@ -2,11 +2,14 @@ package com.example.car_elec_station_res.Model;
 
 import com.google.android.gms.maps.model.LatLng;
 
+
 public class Borne {
     private int idBorne;
     private String typesPrise;
     private String titre;
     private LatLng position;
+    private String prediction; // Nouvelle propriété de prédiction
+
 
     public int getIdBorne() {
         return idBorne;

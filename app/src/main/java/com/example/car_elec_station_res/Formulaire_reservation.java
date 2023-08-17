@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +56,11 @@ public class Formulaire_reservation extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private Handler statusHandler;
+    private ReservationConfirmedListener reservationConfirmedListener;
+    public interface ReservationConfirmedListener {
+        void onReservationConfirmed();
+    }
+
 
 
     @Override
@@ -83,10 +90,17 @@ public class Formulaire_reservation extends AppCompatActivity {
         String idB = getIntent().getStringExtra("idbo");
         borneIdText.setText(idB);
 
+        // Vérifiez si l'utilisateur est déjà connecté
         // Reception du numéro de téléphone.
         phoneNText = findViewById(R.id.phoneNum);
-        String Userphone = getIntent().getStringExtra("phoneuser");
-        phoneNText.setText(Userphone);
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String loggedPhone = sharedPreferences.getString("logged_in_phone", "");
+        // Si l'utilisateur est connecté, affichez automatiquement le numéro de téléphone dans le champ de saisie
+        if(!TextUtils.isEmpty(loggedPhone)){
+            phoneNText.setText(loggedPhone);
+            phoneNText.setEnabled(false);// Désactivez la modification du numéro
+        }
+
 
         autoCompleteTxt = findViewById(R.id.types_prise);
         adapterItems = new ArrayAdapter<>(this, R.layout.list_items, AVAILABLE_PRISE_TYPES);
@@ -114,10 +128,12 @@ public class Formulaire_reservation extends AppCompatActivity {
                 String heurF = btnHeureFR.getText().toString();
 
                 createReservationInFirebase(idBor, phoneU, matrVeh, priseT, datRe, heurD, heurF, "Pending");
-                // Créez un Intent pour démarrer GereReservationActivity
-                Intent intent = new Intent(Formulaire_reservation.this, GereReservationActivity.class);
-                startActivity(intent);
-
+//                // Créez un Intent pour démarrer GereReservationActivity
+//                Intent intent = new Intent(Formulaire_reservation.this, MapsFragment.class);
+//                startActivity(intent);
+                if (reservationConfirmedListener != null) {
+                    reservationConfirmedListener.onReservationConfirmed();
+                }
                 // Suivre le statut de la réservation
                 dialog.dismiss();
             }
@@ -198,12 +214,10 @@ public class Formulaire_reservation extends AppCompatActivity {
                 Toast.makeText(this, "Start time must be before end time", Toast.LENGTH_SHORT).show();
             }
         }
-        checkExistingReservation(phoneU);
-        // Récupérez le numéro de téléphone de l'utilisateur à partir des préférences partagées
-        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-        String userPhone = sharedPreferences.getString("logged_in_phone", "");
-
-
+//        checkExistingReservation(phoneU);
+//        // Récupérez le numéro de téléphone de l'utilisateur à partir des préférences partagées
+//        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+//        String userPhone = sharedPreferences.getString("logged_in_phone", "");
 
     }
 

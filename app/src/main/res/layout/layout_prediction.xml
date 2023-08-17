@@ -1,0 +1,26 @@
+<!-- res/layout/layout_prediction.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:id="@+id/predictionsContainer"
+    android:padding="16dp">
+
+    <!-- Ajoutez ici les vues pour afficher les clés primaires -->
+    <TextView
+        android:id="@+id/predictionPrimaryKey1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/predictionPrimaryKey2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/white"/>
+
+    <!-- Ajoutez plus de TextViews selon le nombre de clés primaires que vous avez -->
+</LinearLayout>

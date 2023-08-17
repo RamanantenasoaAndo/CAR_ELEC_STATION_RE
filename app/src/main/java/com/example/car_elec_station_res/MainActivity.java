@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -82,10 +84,22 @@ public class MainActivity extends AppCompatActivity {
         btn_reservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Login.class);
+                // Vérifier si l'utilisateur est déjà connecté
+                SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+                boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
+
                 String idB = markeridBorn.getText().toString().replace("Id Borne: ", ""); // Récupérer l'idBorne sans le préfixe
-                intent.putExtra("idbo", idB); // Passer l'idBorne à l'activité de réservation
-                startActivity(intent);
+                if(isLoggedIn){
+                    Intent intent = new Intent(getApplicationContext(), Formulaire_reservation.class);
+                    intent.putExtra("idbo", idB); // Passer l'idBorne à l'activité de réservation
+                    startActivity(intent);
+
+                }else{
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    intent.putExtra("idbo", idB); // Passer l'idBorne à l'activité de réservation
+                    startActivity(intent);
+                }
+
             }
         });
     }

@@ -150,6 +150,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         if (loggedPhone.isEmpty()) {
             // L'utilisateur n'est pas connecté, masquez le numéro de téléphone
             phoneNumberTextView.setVisibility(View.GONE);
+
         } else {
             // L'utilisateur est connecté, affichez le numéro de téléphone
             phoneNumberTextView.setText(loggedPhone);

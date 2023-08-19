@@ -26,14 +26,6 @@
         layout="@layout/layout_legend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginStart="16dp"
-        android:gravity="center_vertical"
-        android:background="@android:color/white"/>
-    <include
-        layout="@layout/layout_prediction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:layout_marginStart="16dp"
         android:gravity="center_vertical"
@@ -41,37 +33,40 @@
 
 
 
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="40dp"
         android:layout_gravity="center"
-        android:background="#fece2f"
-        android:orientation="horizontal">
+        android:background="@drawable/user_info_background"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-        <ImageView
-            android:id="@+id/usericon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_person"/>
+    <ImageView
+        android:id="@+id/usericon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_person"
+        android:tint="@color/red" />
 
-        <TextView
-            android:id="@+id/phoneNumberTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="16sp"
-            android:layout_marginStart="8dp"
-            android:textColor="@android:color/black"
-            android:fontFamily="@font/antic" />
-    </LinearLayout>
-
+    <TextView
+        android:id="@+id/phoneNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NON CONNECTER"
+        android:textSize="16sp"
+        android:layout_marginStart="8dp"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/antic" />
+</LinearLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="40dp"
+       android:layout_marginLeft="250dp">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/filterButton"

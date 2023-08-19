@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/wave__1_"
+
+    android:padding="16dp"
+    tools:context=".CompteActivity">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/appIcon"
+            android:layout_width="89dp"
+            android:layout_height="148dp"
+            android:src="@drawable/userparam"
+            android:layout_gravity="start"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/toolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/appIcon"
+        android:layout_alignTop="@id/appIcon"
+            android:fontFamily="@font/bangers"
+        android:text="PARAMETRE DE COMPTE"
+
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/titlePhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Numéro de téléphone"
+
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/phoneNumberTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/edit_text_border"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/titleUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nom d'utilisateur"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="8dp" />
+
+    <EditText
+        android:id="@+id/usernameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/edit_text_border"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/titleEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="8dp" />
+
+
+    <EditText
+        android:id="@+id/emailTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/edit_text_border"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mot de passe"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="8dp" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passTextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_border"
+        app:endIconMode="password_toggle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/edit_text_border"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+    <Button
+        android:id="@+id/editProfileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ENREGISTRE LA MODIFICATION"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_background"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

@@ -23,6 +23,18 @@
         android:theme="@style/Theme.CAR_ELEC_STATION_RES"
         tools:targetApi="31">
         <activity
+            android:name=".ReservationDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PaymentDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SimpleLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".CompteActivity"
             android:exported="false" />
         <activity

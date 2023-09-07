@@ -73,6 +73,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     LatLng rosebelle = new LatLng(-20.403906, 57.594789);
     LatLng tamarain = new LatLng(-20.361361, 57.374841);
     LatLng arsenal = new LatLng(-20.128342, 57.530298);
+    LatLng paris = new LatLng(-19.5656458, 56.56692);
 
     ArrayList<String> title = new ArrayList<String>();
     ArrayList<String> types = new ArrayList<String>();
@@ -204,6 +205,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
                                             // Vérifier si le numéro de borne est présent dans la liste des réservations
                                             boolean estOccupe = reservations.contains(String.valueOf(idB));
+
 
                                             // Créer une vue pour afficher les données et l'état de la réservation
                                             View itemView = getLayoutInflater().inflate(R.layout.item_borne, null);
@@ -393,17 +395,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         arrayList.add(rosebelle);
         arrayList.add(tamarain);
         arrayList.add(arsenal);
+        arrayList.add(paris);
 
         title.add("UDM STATION St pierre");
         title.add("UDM STATION Camp Levieux");
         title.add("UDM STATION Paille");
         title.add("UDM STATION Rose-Hill");
         title.add("UDM STATION Moka");
+        title.add("UDM STATION paris");
 
         types.add("Types 2 ,CCS/SAE");
         types.add("Prise Combo ");
         types.add("Types 2 ,G");
         types.add("CCS/SAE, CHAdeMO");
+        types.add("Types 2 ,UDM");
         types.add("Types 2 ,UDM");
 
         idBorne.add(11);
@@ -411,11 +416,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         idBorne.add(13);
         idBorne.add(14);
         idBorne.add(15);
+        idBorne.add(16);
 
         modesRecharge.add("Normal 2-5kw");
         modesRecharge.add("Accelerated 16-30kw");
         modesRecharge.add("Fast 30-350kw");
         modesRecharge.add("Fast 30-350kw");
+        modesRecharge.add("Normal 2-5kw");
         modesRecharge.add("Normal 2-5kw");
 
         // Obtenir une référence à la base de données Firebase
@@ -450,7 +457,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         // Affichez une boîte de dialogue ou un menu contextuel avec les options de déconnexion ou de changement de compte
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Options utilisateur")
-                .setItems(new String[]{"Déconnexion", "Changer de compte"}, new DialogInterface.OnClickListener() {
+                .setItems(new String[]{"Déconnexion", "Changer de compte","Connexion"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // En fonction de l'option sélectionnée, effectuez les actions appropriées
                         switch (which) {
@@ -459,6 +466,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                 break;
                             case 1: // Changer de compte
                                 redirectToLoginScreen();
+                                break;
+                            case 2: // Changer de compte
+                                redirectToLogin();
                                 break;
                         }
                     }
@@ -471,6 +481,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         Intent loginIntent = new Intent(requireContext(), Login.class);
         startActivity(loginIntent);
         requireActivity().finish(); // Fermez l'activité actuelle pour empêcher le retour en arrière
+    }
+    private void redirectToLogin(){
+        // Vous pouvez utiliser une Intent pour rediriger l'utilisateur vers l'écran de connexion
+        Intent loginIntent = new Intent(requireContext(), SimpleLoginActivity.class);
+        startActivity(loginIntent);
+        requireActivity().finish(); // Fermez l'activité actuelle pour empêcher le retour en arrière
+
     }
 
     private void performLogout() {

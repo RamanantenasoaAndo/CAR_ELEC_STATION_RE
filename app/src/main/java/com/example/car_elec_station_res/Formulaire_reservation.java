@@ -9,7 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,17 +51,14 @@ public class Formulaire_reservation extends AppCompatActivity {
 
     private AutoCompleteTextView autoCompleteTxt;
     private ArrayAdapter<String> adapterItems;
-    private TextInputEditText VehMatricul, dateRes;
-    private TextView borneIdText, phoneNText;
+    private TextInputEditText VehMatricul, dateRes,batteryCapacityEditText;
+    private TextView borneIdText, phoneNText,chargingTimeTextView;
     private AutoCompleteTextView types_prise;
     private Dialog dialog;
 
     private DatabaseReference databaseReference;
     private Handler statusHandler;
-    private ReservationConfirmedListener reservationConfirmedListener;
-    public interface ReservationConfirmedListener {
-        void onReservationConfirmed();
-    }
+
 
 
 
@@ -67,6 +66,37 @@ public class Formulaire_reservation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulaire_reservation);
+
+        batteryCapacityEditText = findViewById(R.id.batteryCapacityEditText);
+        chargingTimeTextView = findViewById(R.id.chargingTimeTextView);
+        batteryCapacityEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Vérifiez si le champ de capacité de la batterie est vide
+                if (!TextUtils.isEmpty(editable)) {
+                    double batteryCapacity = Double.parseDouble(editable.toString());
+
+                    // Supposons que la puissance de la borne est de 7 kW (vous pouvez ajuster cela)
+                    double chargingPower = 7.0;
+
+                    // Calculez le temps de recharge estimé en heures
+                    double chargingTimeHours = batteryCapacity / chargingPower;
+
+                    // Affichez l'estimation du temps de recharge dans le TextView
+                    String estimatedChargingTime = String.format("%.2f", chargingTimeHours);
+                    chargingTimeTextView.setText("Estimation du temps de recharge : " + estimatedChargingTime + " heures");
+                } else {
+                    // Effacez le texte de l'estimation si le champ de capacité de batterie est vide
+                    chargingTimeTextView.setText("");
+                }
+            }
+        });
 
         dateResEditText = findViewById(R.id.dateRes);
         calendar = Calendar.getInstance();
@@ -106,46 +136,9 @@ public class Formulaire_reservation extends AppCompatActivity {
         adapterItems = new ArrayAdapter<>(this, R.layout.list_items, AVAILABLE_PRISE_TYPES);
         autoCompleteTxt.setAdapter(adapterItems);
 
-        dialog = new Dialog(Formulaire_reservation.this);
-        dialog.setContentView(R.layout.dialogue_confirmation);
-        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.background));
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-        Button Cancel = dialog.findViewById(R.id.btn_cancel);
-        Button Okay = dialog.findViewById(R.id.btn_okay);
 
-        Okay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String idBor = borneIdText.getText().toString();
-                String phoneU = phoneNText.getText().toString();
-                String matrVeh = VehMatricul.getText().toString();
-                String priseT = autoCompleteTxt.getText().toString();
-                String datRe = dateRes.getText().toString();
-                String heurD = btnHeureDR.getText().toString();
-                String heurF = btnHeureFR.getText().toString();
 
-                createReservationInFirebase(idBor, phoneU, matrVeh, priseT, datRe, heurD, heurF, "Pending");
-//                // Créez un Intent pour démarrer GereReservationActivity
-//                Intent intent = new Intent(Formulaire_reservation.this, MapsFragment.class);
-//                startActivity(intent);
-                if (reservationConfirmedListener != null) {
-                    reservationConfirmedListener.onReservationConfirmed();
-                }
-                // Suivre le statut de la réservation
-                dialog.dismiss();
-            }
-        });
-
-        Cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelReservation();
-                dialog.dismiss();
-            }
-        });
 
         // Sélection de l'heure de début de réservation
 
@@ -207,7 +200,18 @@ public class Formulaire_reservation extends AppCompatActivity {
         } else {
             if (compareTimes(heurD, heurF) < 0) {
                 // L'heure de début de recharge est avant l'heure de fin
-                dialog.show();
+                // Rediriger vers la page de paiement ici
+                Intent paymentIntent = new Intent(Formulaire_reservation.this, PaymentActivity.class);
+                // Ajouter les données nécessaires à l'intent, par exemple:
+                paymentIntent.putExtra("idBor", idBor);
+                paymentIntent.putExtra("phoneU", phoneU);
+                paymentIntent.putExtra("matrVeh", matrVeh);
+                paymentIntent.putExtra("priseT", priseT);
+                paymentIntent.putExtra("datRe", datRe);
+                paymentIntent.putExtra("heurD", heurD);
+                paymentIntent.putExtra("heurF", heurF);
+                startActivity(paymentIntent);
+
 
             } else {
                 // L'heure de début de recharge est après ou égale à l'heure de fin
@@ -221,40 +225,6 @@ public class Formulaire_reservation extends AppCompatActivity {
 
     }
 
-
-    private void createReservationInFirebase(String idBor, String phoneU, String matrVeh, String priseT,
-                                             String datRe, String heurD, String heurF ,String status) {
-
-        // Appelez la méthode checkReservationStatus en passant l'ID de la réservation
-
-        databaseReference.child("reservation").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild(idBor)) {
-                    Toast.makeText(Formulaire_reservation.this, "Borne reserved", Toast.LENGTH_SHORT).show();
-                } else {
-                    DatabaseReference reservationRef = databaseReference.child("reservation").child(idBor);
-                    reservationRef.child("Phone").setValue(phoneU);
-                    reservationRef.child("Matricule").setValue(matrVeh);
-                    reservationRef.child("Branchement").setValue(priseT);
-                    reservationRef.child("DateReservation").setValue(datRe);
-                    reservationRef.child("HeureD_R").setValue(heurD);
-                    reservationRef.child("HeureF_R").setValue(heurF);
-                    reservationRef.child("Status").setValue(status);
-
-                    // Afficher un message de réussite puis terminer l'activité
-                    Toast.makeText(Formulaire_reservation.this, "Reservations submitted successfully", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Firebase", "Failed to create reservation: " + error.getMessage());
-            }
-        });
-    }
 
 
 

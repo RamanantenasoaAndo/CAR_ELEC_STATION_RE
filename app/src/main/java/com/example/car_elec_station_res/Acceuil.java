@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class Acceuil extends AppCompatActivity implements Formulaire_reservation.ReservationConfirmedListener{
+public class Acceuil extends AppCompatActivity implements PaymentActivity.ReservationConfirmedListener{
     BottomNavigationView bottomNavigationView;
     MapsFragment mapsFragment = new MapsFragment();
     HomeFragment homeFragment =new HomeFragment();
